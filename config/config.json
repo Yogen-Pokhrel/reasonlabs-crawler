@@ -1,0 +1,29 @@
+{
+  "development": {
+    "username": "root",
+    "password": "Henry@786",
+    "database": "crawler",
+    "logging" : false,
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "timezone": "+5:45"
+
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "timezone": "+05:30"
+  },
+  "production": {
+    "username": "datstagi_usr",
+    "password": "4$[&q4tHmCBy",
+    "database": "datstagi_datStage",
+    "host": "192.254.219.230",
+    "dialect": "mysql",
+    "logging" : false,
+    "timezone": "+05:00"
+  }
+}
