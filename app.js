@@ -12,12 +12,14 @@ require('dotenv').config();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.set('view engine','ejs');
-ejs.delimiter = '?';
 app.use(expressLayouts);
+app.set('layout', 'layouts/')
 
 const dataCrawler = require('./routes/dataCrawler/controller');
+const defaultRoutes = require('./routes');
 
 app.use('/crawl',dataCrawler);
+app.use('/',defaultRoutes);
 
 app.use((req, res, next) => {
     const error = new Error('Not found');
