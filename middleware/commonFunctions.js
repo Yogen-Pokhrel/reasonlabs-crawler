@@ -32,6 +32,29 @@ const extractStringFromObject = (data) => {
     return extractStringFromObject(Object.values(data)[0]);
 }
 
+const paginate = (query, { page, pageSize }) => {
+    if(page>0){
+      page = page - 1;
+    }
+    const offset = page*pageSize;
+    const limit = pageSize;
+  
+    return {
+      ...query,
+      offset,
+      limit,
+    };
+  }
+
+  const queryStringBuilder = (params) => {
+
+        var qs = Object.keys(params).map(function (key) {
+        return key + '=' + params[key]
+    }).join('&');
+    return qs;
+    }
+
+
  const downloadFiles = function(uri, filename, callback){
 
     axios({
@@ -72,7 +95,9 @@ const extractStringFromObject = (data) => {
 module.exports = {
     prepareArrayFromObject : prepareArrayFromObject,
     extractStringFromObject: extractStringFromObject,
-    downloadFiles: downloadFiles
+    downloadFiles: downloadFiles,
+    paginate: paginate,
+    queryStringBuilder: queryStringBuilder
 }
 
 // module.export = {prepareArrayFromObject}

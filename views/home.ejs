@@ -1,1 +1,37 @@
-<div>Home</div>
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+<div class="top-bar">
+    Uploaded Files List
+</div>
+<div class="table-wrapper">
+    <table class="table display" id="data-table">
+        <thead>
+          <tr>
+            <th width="2%"><input type="checkbox" id="checkAll"></th>
+            <th >Filename</th>
+            <th >Published?</th>
+            <th >Deleted?</th>
+            <th width="15%">Date Created</th>
+          </tr>
+        </thead>
+      </table>
+</div>
+<script src="//cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready( function () {
+        // $('#myTable').DataTable();
+        var datatable = $('#data-table').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "order": [],
+        "ajax": {
+            "url": "/fetchUploadedData",
+            "type": "POST"
+        },
+        "pageLength": 25,
+        "columnDefs": [{ 
+            "targets": [0,1,2,3,4],
+            "orderable": false
+        }]
+    });
+    } );
+</script>

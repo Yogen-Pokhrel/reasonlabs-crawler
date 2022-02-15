@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const express = require('express');
 let ejs = require('ejs');
 const expressLayouts = require('express-ejs-layouts');
+var serveStatic = require('serve-static');
+const path = require('path');
 
 global.__basedir = __dirname;
 const port = 4000;
@@ -14,6 +16,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.set('view engine','ejs');
 app.use(expressLayouts);
 app.set('layout', 'layouts/')
+
+app.use(serveStatic(path.join(__dirname, 'public'), {
+   // maxAge: '10y',
+  }))
 
 const dataCrawler = require('./routes/dataCrawler/controller');
 const defaultRoutes = require('./routes');
