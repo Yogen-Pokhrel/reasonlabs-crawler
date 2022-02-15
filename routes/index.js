@@ -23,13 +23,13 @@ router.post('/fetchUploadedData', async function(req, res) {
 
     let tableData = [], rowData = {};
     data.rows.forEach(function(ele){
-        rowData = {
-            id: ele.id,
-            fileName: ele.fileName,
-            isDeleted: ele.isDeleted,
-            isPublished: ele.isPublished,
-            createdAt: ele.createdAt
-        }
+        rowData = [
+            ele.id,
+            ele.fileName,
+            ele.isDeleted,
+            ele.isPublished,
+            ele.createdAt
+        ]
         tableData.push(rowData);
     })
 

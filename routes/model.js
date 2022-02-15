@@ -13,9 +13,9 @@ class module_model {
     filters = [];
     getAllData = async (req)=>{
         var response = {};
-        var page = req.query.page ? req.query.page : 1;
+        var page = req.body.start ? req.body.start : 1;
         page = parseInt(page);
-        var pageSize = req.query.limit ? req.query.limit : 25;
+        var pageSize = req.body.length ? req.body.length : 25;
         pageSize = parseInt(pageSize);
 
         var queryCondition = await this.getQueryConditions(req);
