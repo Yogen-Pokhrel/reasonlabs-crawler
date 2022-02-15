@@ -81,6 +81,10 @@ class module_model {
        return queryString;
   
       }
+
+      handleOrder = () => {
+        
+      }
 }
 
 module.exports = new module_model();

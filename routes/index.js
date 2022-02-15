@@ -3,6 +3,7 @@ var router = express.Router();
 const models = require('../models');
 var Sequelize = require('sequelize');
 const moduleModel  =require('./model');
+const restaurantModel  =require('./restaurantModel');
 
 router.get('/', async function(req, res) {
     res.render('home',{title: 'Home View', layout: 'layouts/DEFAULT'});
@@ -41,6 +42,14 @@ router.post('/fetchUploadedData', async function(req, res) {
     }
     res.send(responseData);
     
+})
+
+
+router.get('/restaurant',async function(req,res) {
+    // let newOrder = { name: "David", status : 0};
+    // restaurantModel.orders.push(newOrder);
+    restaurantModel.handleOrder();
+    res.send({data: "This is a restaurant"});
 })
 
 module.exports = router;
