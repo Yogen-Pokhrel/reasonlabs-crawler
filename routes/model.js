@@ -17,16 +17,18 @@ class module_model {
         page = parseInt(page);
         var pageSize = req.body.length ? req.body.length : 25;
         pageSize = parseInt(pageSize);
+        page = parseInt(page / pageSize);
 
-        var queryCondition = await this.getQueryConditions(req);
+        // var queryCondition = await this.getQueryConditions(req);
         await this.modelName.findAndCountAll(
           paginate(
             { 
-              where : {isDeleted : 0, [Op.and]: queryCondition}, 
-              attributes: this.attributes
+              where : {isDeleted : 0}, 
+            //   logging: console.log
               
             },
             { page, pageSize },
+            
           )).then(obj =>{
             response = {
               type: "success",
