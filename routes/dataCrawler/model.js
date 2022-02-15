@@ -1,9 +1,30 @@
 const models = require(__basedir +'/models');
 const chalk = require('chalk');
 var fs = require('fs');
-const {downloadFiles} = require(__basedir+"/middleware/commonFunctions");
+const axios = require('axios');
+const {prepareArrayFromObject,downloadFiles} = require(__basedir+"/middleware/commonFunctions");
 
 class module_model {
+
+    fetchDataFromAPI = async () => {
+
+        let parsedData = [];
+        let apiData;
+        try{
+            apiData = await axios({
+                method: 'get',
+                url: 'https://cfrkftig71.execute-api.us-east-1.amazonaws.com/prod?expert=true',
+            })
+            parsedData = prepareArrayFromObject(apiData.data);
+        }catch(err){
+            console.log("error on data crawler controller");
+        }
+        //No need to wait for the execution to act like the response is quick. If the user wants to check the files uploaded then we can await for the execution of the function. The logs can also be maintained in some file or in a db.
+        this.uploadFiles(parsedData);
+
+        return {parsedData:parsedData, apiData:apiData};
+    }
+
     uploadFiles = async (allFiles) =>{
         if(allFiles.length > 0){
             let filename = '';

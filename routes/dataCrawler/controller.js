@@ -1,35 +1,18 @@
 const express = require('express');
 const router = express.Router();
+var CronJob = require('cron').CronJob;
 const moduleModel  =require('./model');
-const axios = require('axios');
-const {prepareArrayFromObject} = require(__basedir+"/middleware/commonFunctions");
 
 router.get('/',async (req,res) => {
 
-    let parsedData = [];
-    let apiData;
-    try{
-        apiData = await axios({
-            method: 'get',
-            url: 'https://cfrkftig71.execute-api.us-east-1.amazonaws.com/prod?expert=true',
-        })
-        parsedData = prepareArrayFromObject(apiData.data);
-    }catch(err){
-        console.log("error on data crawler controller");
-    }
-
-    //No need to wait for the execution to act like the response is quick. If the user wants to check the files uploaded then we can await for the execution of the function. The logs can also be maintained in some file or in a db.
-    moduleModel.uploadFiles(parsedData);
-    res.send({msg: "API Data", data: parsedData, apiData: (apiData) ? apiData.data : '' });
+    let apiData = await moduleModel.fetchDataFromAPI();
+    res.send({msg: "API Data", data: apiData.parsedData, apiData: (apiData.apiData) ? apiData.apiData.data : '' });
    
   })
 
-  router.get('/fetch-data',async (req,res) => {
-
-    let filename = uri.split('/').pop();
-    download("https://cdn.reasonsecurity.com/exam-public-file/kiPUbWJY",filename, function(){ console.log("I am uploaded")});
-    res.send({msg: "I am fetching data"});
-   
-  })
+  var job = new CronJob('*/5 * * * *', function() {
+    moduleModel.fetchDataFromAPI();
+  }, null, true, 'Asia/Dubai');
+  job.start();
 
 module.exports = router;

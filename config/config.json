@@ -5,8 +5,7 @@
     "database": "crawler",
     "logging" : false,
     "host": "127.0.0.1",
-    "dialect": "mysql",
-    "timezone": "+5:45"
+    "dialect": "mysql"
 
   },
   "test": {
