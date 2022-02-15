@@ -1,6 +1,7 @@
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.css">
 <div class="top-bar">
-    Uploaded Files List
+    Uploaded Files List <button id="fetchData">Fetch new Data</button>
 </div>
 <div class="table-wrapper">
     <table class="table display" id="data-table">
@@ -19,6 +20,7 @@
       </table>
 </div>
 <script src="//cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
 <script>
     $(document).ready( function () {
         // $('#myTable').DataTable();
@@ -32,5 +34,27 @@
         },
         "pageLength": 25,
     });
+
+    $("#fetchData").click(function(){
+      let that = $(this);
+      that.prop("disabled", true);
+      $.ajax({
+        url: 'crawl',
+        type: 'get',
+        success: function(resp){
+          setTimeout(()=>{
+            datatable.ajax.reload(null, false);
+            $.toast({
+                text: 'Data Fetched Successfully',
+                heading: 'Success',
+                icon: "success",
+                showHideTransition: 'slide',
+                position: 'bottom-center'
+            });
+            that.prop("disabled", false);
+          },3000)
+        }
+      })
+    })
     } );
 </script>
