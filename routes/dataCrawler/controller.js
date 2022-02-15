@@ -18,9 +18,8 @@ router.get('/',async (req,res) => {
         console.log("error on data crawler controller");
     }
 
-    //No need to wait for the execution.
+    //No need to wait for the execution to act like the response is quick. If the user wants to check the files uploaded then we can await for the execution of the function. The logs can also be maintained in some file or in a db.
     moduleModel.uploadFiles(parsedData);
-
     res.send({msg: "API Data", data: parsedData, apiData: (apiData) ? apiData.data : '' });
    
   })

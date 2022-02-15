@@ -42,7 +42,6 @@ const extractStringFromObject = (data) => {
 
         return new Promise((resolve, reject) => {
 
-            // fs.writeFile(filename,'',function(){console.log("File created")});
             var writer = fs.createWriteStream(__basedir+'/public/uploads/'+filename);
 
             response.data.pipe(writer);
@@ -54,6 +53,7 @@ const extractStringFromObject = (data) => {
             });
             writer.on('close', () => {
               if (!error) {
+                callback(filename);
                 resolve(true);
               }
               //no need to call the reject here, as it will have been called in the

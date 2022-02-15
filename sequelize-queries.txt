@@ -1,0 +1,1 @@
+sequelize model:generate --name RemoteFiles --attributes fileName:string,isPublished:integer,isDeleted:integer
