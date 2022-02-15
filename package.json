@@ -1,0 +1,31 @@
+{
+  "name": "crawler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yogen-Pokhrel/reasonlabs-crawler.git"
+  },
+  "author": "Yogen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yogen-Pokhrel/reasonlabs-crawler/issues"
+  },
+  "homepage": "https://github.com/Yogen-Pokhrel/reasonlabs-crawler#readme",
+  "dependencies": {
+    "axios": "^0.26.0",
+    "body-parser": "^1.19.1",
+    "dotenv": "^16.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.2",
+    "express-ejs-layouts": "^2.5.1",
+    "fs": "^0.0.1-security",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.16.1",
+    "sequelize-cli": "^6.4.1"
+  }
+}
