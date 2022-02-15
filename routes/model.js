@@ -17,7 +17,8 @@ class module_model {
         page = parseInt(page);
         var pageSize = req.body.length ? req.body.length : 25;
         pageSize = parseInt(pageSize);
-        page = parseInt(page / pageSize);
+        page = parseInt(page / pageSize) + 1;
+        // if(page == 0) page = 1;
 
         // var queryCondition = await this.getQueryConditions(req);
         await this.modelName.findAndCountAll(
