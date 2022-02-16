@@ -154,6 +154,7 @@ class module_model {
                 classInstance.orders[order].taken = true;
                 classInstance.doughChefs.busy = classInstance.doughChefs.busy + 1;
                 message = `${classInstance.orders[order].name} order is given to Dough Chef at ${new Date()}`;
+                classInstance.orders[order].startTime = new Date();
                 console.log(chalk.yellow(message));
                 classInstance.saveLogs(order,message);
                   setTimeout(function(){
@@ -243,6 +244,7 @@ class module_model {
                   classInstance.waiters.busy = classInstance.waiters.busy - 1;
 
                   message = `${classInstance.orders[order].name} order is completed by Waiter and served to customer at ${new Date()}`;
+                  classInstance.orders[order].endTime = new Date();
                   classInstance.saveLogs(order,message);
                   console.log(chalk.bgGreen(message));
 
@@ -273,7 +275,10 @@ class module_model {
         let peningOrders = this.pendingOrders.filter(function(ele){ 
             return ele != orderId; 
         });
-        console.log(chalk.red(`${this.orders[orderId].name} has completed his/her order, removed from the pending list.`))
+        console.log(chalk.red(`${this.orders[orderId].name} has completed his/her order, removed from the pending list.`));
+        let timeDifference = Math.abs(this.orders[orderId].startTime - this.orders[orderId].endTime);
+        timeDifference = new Date(timeDifference);
+        console.log(chalk.red(`Total time to serve for ${this.orders[orderId].name} is ${timeDifference.getMinutes()} minutes:${timeDifference.getSeconds()} seconds`))
         this.pendingOrders = peningOrders;
 
       }
