@@ -6,6 +6,10 @@ const moduleModel  =require('./model');
 const restaurantModel  =require('./restaurantModel');
 
 router.get('/', async function(req, res) {
+    res.render('index',{title: 'Home View', layout: 'layouts/DEFAULT'});
+})
+
+router.get('/list-uploaded-data', async function(req, res) {
     res.render('home',{title: 'Home View', layout: 'layouts/DEFAULT'});
 })
 
