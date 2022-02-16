@@ -1,45 +1,33 @@
-# version: "3.9"  # optional since v1.27.0
-# services:
-#   web:
-#     build: .
-#     container_name: "reasonlabs"
-#     restart: "on-failure"
-#     command: "npm start"
-#     ports:
-#       - "5000:4000"
-#     volumes:
-#       - .:/reasonlabs
-#       - logvolume01:/var/log
-# volumes:
-#   logvolume01: {}
 version: '3.8'
 services:
   mysqldb:
     image: mysql:5.7
     restart: unless-stopped
-    env_file: ./.env
     environment:
-      - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
-      - MYSQL_DATABASE=$MYSQLDB_DATABASE
-    ports:
-      - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=Henry@786
+      - MYSQL_ROOT_HOST='127.0.0.1'
     volumes:
-      - db:/var/lib/mysql
+      - /home/yogen/Desktop/mysqldb:/var/lib/mysql
+      # - /var/www/html/mysqld:/var/lib/mysql
+    networks:
+      - myapp-network
   app:
+    image: crawler_app:1.0.5
     depends_on:
       - mysqldb
-    build: ./reasonlabs
     restart: unless-stopped
-    env_file: ./.env
+    container_name: reasonlabs
     ports:
-      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
-    environment:
-      - DB_HOST=mysqldb
-      - DB_USER=$MYSQLDB_USER
-      - DB_PASSWORD=$MYSQLDB_ROOT_PASSWORD
-      - DB_NAME=$MYSQLDB_DATABASE
-      - DB_PORT=$MYSQLDB_DOCKER_PORT
+      - 5002:4000
+    command: bash -c "npx sequelize-cli db:create && npx sequelize-cli db:migrate && node app.js"
+    # command: bash -c "node app.js"
     stdin_open: true
     tty: true
+    networks:
+      - myapp-network
 volumes: 
   db:
+networks:
+  myapp-network:
+    driver: bridge

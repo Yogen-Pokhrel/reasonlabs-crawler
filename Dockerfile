@@ -12,11 +12,15 @@ COPY package.json ./
 COPY package-lock.json ./
 RUN npm install --silent
 RUN npm install -g sequelize-cli
-RUN sequelize-cli db:create
-RUN sequelize-cli db:migrate
+# RUN sequelize-cli db:create
+# RUN sequelize-cli db:migrate
 
 # add app
-#COPY . ./
+COPY . ./
+
+
+# RUN sequelize-cli db:create
+# RUN sequelize-cli db:migrate
 
 # start app
 #CMD ["npm", "start"]
