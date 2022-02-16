@@ -49,7 +49,50 @@ router.get('/restaurant',async function(req,res) {
     // let newOrder = { name: "David", status : 0};
     // restaurantModel.orders.push(newOrder);
     restaurantModel.handleOrder();
-    res.send({data: "This is a restaurant"});
+    // let i = 0;
+    // while(i < 100){
+    // console.log("I am counter",i);
+    //     if(i == 50){
+    //     setTimeout(() => {
+    //     console.log("I am here in timeout", i);
+    //     }, 3000);
+    // }
+    // i++;
+    // console.log("I am counter",i);
+    // }
+
+    // console.log("Loop ends");
+
+    res.send({msg: "Please check for output in server console"});
 })
+
+router.get('/function-chain', function(req,res){
+
+    var strConcatenation = {
+        str: '',
+      fn: function(newstr = ''){
+        if(newstr === ''){
+        let concatenatedString = this.str;
+        this.str = "";
+        return concatenatedString;
+        }
+        this.str = this.str + newstr + ' ';
+        return this;
+      }
+    }
+    
+    function fn(str){
+        strConcatenation.fn(str);
+      return strConcatenation;
+    }
+    
+    console.log(fn("hello").fn("world").fn())
+        //Will print: hello world !!!
+      
+    console.log(fn("This").fn("is").fn("just").fn("a").fn("test").fn())
+    //will print This is just a test
+    res.send("Please Check Output on Server Console");
+
+});
 
 module.exports = router;

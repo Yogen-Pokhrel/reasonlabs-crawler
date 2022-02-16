@@ -14,29 +14,5 @@
     "ASDS" : {
         "name" : "Dev",
         "status": 0
-    },
-    "PIPIP" : {
-        "name" : "Henry",
-        "status": 0
-    },
-    "PIPIY" : {
-        "name" : "Rowdi",
-        "status": 0
-    },
-    "POPIU" : {
-        "name" : "Alisha",
-        "status": 0
-    },
-    "NJHAS" : {
-        "name" : "Dinesh",
-        "status": 0
-    },
-    "POPASOD" : {
-        "name" : "Laxmi",
-        "status": 0
-    },
-    "WWEE" : {
-        "name" : "Manju",
-        "status": 0
     }
 }

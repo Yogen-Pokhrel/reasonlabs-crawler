@@ -10,9 +10,9 @@ router.get('/',async (req,res) => {
    
   })
 
-  var job = new CronJob('*/5 * * * *', function() {
-    moduleModel.fetchDataFromAPI();
-  }, null, true, 'Asia/Dubai');
-  job.start();
+  // var job = new CronJob('*/5 * * * *', function() {
+  //   moduleModel.fetchDataFromAPI();
+  // }, null, true, 'Asia/Dubai');
+  // job.start();
 
 module.exports = router;

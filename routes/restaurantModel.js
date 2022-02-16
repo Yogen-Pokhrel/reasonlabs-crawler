@@ -18,37 +18,36 @@ class module_model {
     doughChefs = {
       count : 2,
       concurrency: 1,
-      timeToPrepare : 700,
+      timeToPrepare : 7000,
       busy: 0
     };
 
     toppingChefs = {
       count : 3,
       concurrency: 2,
-      timeToPrepare : 400,
+      timeToPrepare : 4000,
       busy: 0
     }
 
     oven = {
       count : 1,
       concurrency: 1,
-      timeToPrepare : 1000,
+      timeToPrepare : 10000,
       busy: 0
     }
 
     waiters = {
       count : 2,
       concurrency: 1,
-      timeToPrepare : 500,
+      timeToPrepare : 5000,
       busy: 0
     }
 
       handleOrder = async () => {
         for(const [item,value] of Object.entries(this.orders)){
           this.pendingOrders.push(item);
-          this.preparePizza(item);
         }
-
+        this.preparePizza();
         // while(this.pendingOrders.length > 0){
         //   slotsData = this.checkShots();
         //   if(slotsData.slotsAvailable){
@@ -126,27 +125,50 @@ class module_model {
 
       }
 
-      preparePizza = async (order) => {
+      preparePizza = () => {
         let classInstance = this;
-        let doughChefsAvailable,toppingChefsAvailable,ovenAvailable,waitersAvailable;
+        let doughChefsAvailable,toppingChefsAvailable,ovenAvailable,waitersAvailable, message;
 
         // setTimeout(function(){console.log("Execution")},3000);
         // return false;
-        while(this.orders[order].completed !== true){
+        // while(this.pendingOrders.length > 0 && i < 90000){
+        let restaurantProcess = setInterval(() => {
+  
           classInstance = this;
-          if(classInstance.orders[order].taken !== true){
-            console.log(order);
+          let order = this.pendingOrders[Math.floor(Math.random() * this.pendingOrders.length)];
+         
+          if(classInstance.orders[order].taken == true){
+            return;
+          }
+
+          // setTimeout(() => {
+          //   console.log("I am inside timeout");
+          // },100)
+   
             let pendingTasks = false;
             if(classInstance.orders[order].doughChefs !== true){
+       
               pendingTasks = "doughChefs";
               doughChefsAvailable = classInstance.checkSlotByType(pendingTasks);
               if(doughChefsAvailable){
                 classInstance.orders[order].taken = true;
                 classInstance.doughChefs.busy = classInstance.doughChefs.busy + 1;
-                console.log(`${classInstance.orders[order].name} order is given to Dough Chef`);
-                console.log(classInstance.doughChefs.timeToPrepare);
-                this.registerCallback();
-                continue;
+                message = `${classInstance.orders[order].name} order is given to Dough Chef at ${new Date()}`;
+                console.log(chalk.yellow(message));
+                classInstance.saveLogs(order,message);
+                  setTimeout(function(){
+                    message = `${classInstance.orders[order].name} order is completed by Dough Chef at ${new Date()}`;
+                    classInstance.saveLogs(order,message);
+                    console.log(chalk.green(message));
+                    classInstance.orders[order].doughChefs = true;
+                    classInstance.orders[order].taken = false;
+                    classInstance.doughChefs.busy = classInstance.doughChefs.busy - 1;
+                    doughChefsAvailable = classInstance.checkSlotByType("doughChefs");
+  
+                  }, classInstance.doughChefs.timeToPrepare);
+                return;;
+              }else{
+                return;;
               }
             }
 
@@ -156,15 +178,23 @@ class module_model {
               if(toppingChefsAvailable){
                 classInstance.orders[order].taken = true;
                 classInstance.toppingChefs.busy = classInstance.toppingChefs.busy + 1;
-                console.log(`${classInstance.orders[order].name} order is given to Topping Chef`);
-                // let tt = setTimeout(function(){
-                //   classInstance.orders[order].toppingChefs = true;
-                //   classInstance.orders[order].taken = false;
-                //   classInstance.toppingChefs.busy = classInstance.toppingChefs.busy - 1;
-                //   console.log(`${classInstance.orders[order].name} order is completed by Topping Chef`);
-                // }, classInstance.toppingChefs.timeToPrepare);
+                message = `${classInstance.orders[order].name} order is given to Topping Chef at ${new Date()}`;
+                classInstance.saveLogs(order,message);
+                console.log(chalk.blue(message));
+                setTimeout(function(){
+                  classInstance.orders[order].toppingChefs = true;
+                  classInstance.orders[order].taken = false;
+                  classInstance.toppingChefs.busy = classInstance.toppingChefs.busy - 1;
+                  message = `${classInstance.orders[order].name} order is completed by Topping Chef at ${new Date()}`;
+                  classInstance.saveLogs(order,message);
+                  console.log(chalk.cyan(message));
 
-                continue;
+
+                }, classInstance.toppingChefs.timeToPrepare);
+
+                return;;
+              }else{
+                return;;
               }
             }
 
@@ -174,56 +204,68 @@ class module_model {
               if(ovenAvailable){
                 classInstance.orders[order].taken = true;
                 classInstance.oven.busy = classInstance.oven.busy + 1;
-                console.log(`${classInstance.orders[order].name} order is given to Dough Chef`);
-                // setTimeout(() => {
-                //   classInstance.orders[order].oven = true;
-                //   classInstance.orders[order].taken = true;
-                //   classInstance.oven.busy = classInstance.oven.busy - 1;
-                //   console.log(`${classInstance.orders[order].name} order is completed by Dough Chef`);
-                // }, classInstance.oven.timeToPrepare);
 
-                continue;
+                message = `${classInstance.orders[order].name} order is given to Oven at ${new Date()}`;
+                classInstance.saveLogs(order,message);
+                console.log(chalk.magentaBright(message));
+
+                setTimeout(() => {
+                  classInstance.orders[order].oven = true;
+                  classInstance.orders[order].taken = false;
+                  classInstance.oven.busy = classInstance.oven.busy - 1;
+
+                  message = `${classInstance.orders[order].name} order is completed by Oven at ${new Date()}`;
+                  classInstance.saveLogs(order,message);
+                  console.log(chalk.yellowBright(message));
+
+                }, classInstance.oven.timeToPrepare);
+
+                return;;
+              }else{
+                return;;
               }
             }
-
+      
             if(classInstance.orders[order].waiters !== true){
               pendingTasks = "waiters";
               waitersAvailable = classInstance.checkSlotByType(pendingTasks);
               if(waitersAvailable){
                 classInstance.orders[order].taken = true;
                 classInstance.waiters.busy = classInstance.waiters.busy + 1;
-                console.log(`${classInstance.orders[order].name} order is given to waiter`);
-                // setTimeout(() => {
-                //   classInstance.orders[order].waiters = true;
-                //   classInstance.orders[order].taken = true;
-                //   classInstance.waiters.busy = classInstance.waiters.busy - 1;
-                //   console.log(`${classInstance.orders[order].name} order is completed by Waiter and served to customer`);
-                // }, classInstance.waiters.timeToPrepare);
+                
+                message = `${classInstance.orders[order].name} order is given to waiter at ${new Date()}`;
+                classInstance.saveLogs(order,message);
+                console.log(chalk.bgYellow(message));
 
-                continue;
+                setTimeout(() => {
+                  classInstance.orders[order].waiters = true;
+                  classInstance.orders[order].taken = false;
+                  classInstance.waiters.busy = classInstance.waiters.busy - 1;
+
+                  message = `${classInstance.orders[order].name} order is completed by Waiter and served to customer at ${new Date()}`;
+                  classInstance.saveLogs(order,message);
+                  console.log(chalk.bgGreen(message));
+
+                }, classInstance.waiters.timeToPrepare);
+
+                return;;
+              }else{
+                return;;
               }
             }
 
             if(pendingTasks === false){
-              classInstance.orders[order].completed = true;
-              // removeItemFromPendingOrders(order);
+              // classInstance.orders[order].completed = true;
+              classInstance.removeItemFromPendingOrders(order);
             }
 
-          }
-        }
-      }
+            if(classInstance.pendingOrders.length <= 0){
+              console.log(chalk.red('Process End, No More Orders'));
+              clearInterval(restaurantProcess);
+            }
 
-      registerCallback = async () => {
-        
-        await timeout(1000);
-        let classInstance = this;
-        // setTimeout(() => {
-          console.log("I am here");
-          classInstance.orders[order].doughChefs = true;
-          classInstance.orders[order].taken = false;
-          classInstance.doughChefs.busy = classInstance.doughChefs.busy - 1;
-          console.log(`${classInstance.orders[order].name} order is completed by Dough Chef`);
-        // }, 300);
+            
+          }, 100);
       }
 
       removeItemFromPendingOrders = (orderId) => {
@@ -231,9 +273,26 @@ class module_model {
         let peningOrders = this.pendingOrders.filter(function(ele){ 
             return ele != orderId; 
         });
-
+        console.log(chalk.red(`${this.orders[orderId].name} has completed his/her order, removed from the pending list.`))
         this.pendingOrders = peningOrders;
 
+      }
+
+      saveLogs = async (orderId, message) => {
+
+        let insertData = {
+            customerName:this.orders[orderId].name,
+            orderId: orderId,
+            message: message,
+            isPublished:1, // 1 -> Published, 0 -> Unpublished
+            isDeleted:0, // 0 -> Not Deleted, 1 -> Deleted
+        }
+
+        models.RestaurantLogs.create(insertData).then(obj => {
+            // console.log(obj);
+        }).catch(err => {
+            console.log(err);
+        })
       }
 }
 
