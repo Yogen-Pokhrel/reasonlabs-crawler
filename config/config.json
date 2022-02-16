@@ -1,11 +1,12 @@
 {
   "development": {
     "username": "root",
-    "password": "",
+    "password": "Henry@786",
     "database": "crawler",
     "logging" : false,
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "timezone": "+04:00"
 
   },
   "test": {

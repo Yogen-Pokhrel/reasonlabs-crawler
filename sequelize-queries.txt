@@ -1,1 +1,2 @@
 sequelize model:generate --name RemoteFiles --attributes fileName:string,isPublished:integer,isDeleted:integer
+sequelize model:generate --name RestaurantLogs --attributes customerName:string,orderId:integer,message:string,isPublished:integer,isDeleted:integer
